@@ -1,0 +1,450 @@
+// data.js
+// Every match has a unique id. Pages (home schedule, bet-of-the-day, match
+// detail) all reference matches by id so there is a single source of truth.
+// Replace this with a real database or external API integration later.
+
+const matches = {
+  m1: {
+    id: "m1",
+    league: "World Cup 2026",
+    flag: "🏆",
+    date: "2026-06-28",
+    time: "00:30",
+    home: "DR Congo",
+    away: "Uzbekistan",
+    homeForm: "LDLDW",
+    awayForm: "LLLLD",
+    odds: { home: "1.73", draw: "4", away: "4.33" },
+    pick: "1",
+    goals: "U",
+    score: "1:0",
+    venue: "Lincoln Financial Field, Philadelphia",
+    analysis:
+      "DR Congo have been solid defensively in recent fixtures while Uzbekistan continue to struggle on the road. Expect a tight, low-scoring affair with the hosts edging it."
+  },
+  m2: {
+    id: "m2",
+    league: "World Cup 2026",
+    flag: "🏆",
+    date: "2026-06-28",
+    time: "00:30",
+    home: "Colombia",
+    away: "Portugal",
+    homeForm: "WWWWL",
+    awayForm: "WDWWW",
+    odds: { home: "3.9", draw: "3.6", away: "1.91" },
+    pick: "X2",
+    goals: "O",
+    score: "1:2",
+    venue: "MetLife Stadium, New Jersey",
+    analysis:
+      "Portugal's attacking quality should be enough to see off a Colombia side missing key personnel. Goals are likely at both ends given recent form."
+  },
+  m3: {
+    id: "m3",
+    league: "World Cup 2026",
+    flag: "🏆",
+    date: "2026-06-29",
+    time: "18:00",
+    home: "Brazil",
+    away: "Germany",
+    homeForm: "WWDWW",
+    awayForm: "WLDWW",
+    odds: { home: "2.1", draw: "3.3", away: "3.0" },
+    pick: "1",
+    goals: "O",
+    score: "2:1",
+    venue: "AT&T Stadium, Dallas",
+    analysis:
+      "Brazil's home support and attacking depth give them the edge in what should be an open, high-tempo contest with chances for both sides."
+  },
+  m4: {
+    id: "m4",
+    league: "World Cup 2026",
+    flag: "🏆",
+    date: "2026-06-29",
+    time: "21:00",
+    home: "Argentina",
+    away: "Japan",
+    homeForm: "WWWLW",
+    awayForm: "DWLWD",
+    odds: { home: "1.55", draw: "3.9", away: "5.5" },
+    pick: "1",
+    goals: "U",
+    score: "2:0",
+    venue: "SoFi Stadium, Los Angeles",
+    analysis:
+      "Argentina are comfortable favourites here and have generally kept things tight defensively. A controlled, low-scoring win looks the most likely outcome."
+  },
+  m5: {
+    id: "m5",
+    league: "Premier League",
+    flag: "⚽",
+    date: "2026-06-30",
+    time: "15:00",
+    home: "Arsenal",
+    away: "Chelsea",
+    homeForm: "WWDWL",
+    awayForm: "DWWLW",
+    odds: { home: "2.0", draw: "3.4", away: "3.6" },
+    pick: "1",
+    goals: "O",
+    score: "2:1",
+    venue: "Emirates Stadium, London",
+    analysis:
+      "A closely-fought London derby. Arsenal's home form gives them a slight edge, and both sides have shown attacking intent recently."
+  },
+
+  vb1: {
+    id: "vb1",
+    league: "World Cup 2026",
+    flag: "🏆",
+    date: "2026-06-28",
+    time: "20:00",
+    home: "South Africa",
+    away: "Canada",
+    homeForm: "WDLDD",
+    awayForm: "LWDDW",
+    odds: { home: "3.8", draw: "3.5", away: "1.7" },
+    pick: "6 on Canada",
+    pickOdds: "1.7",
+    goals: "-",
+    score: "1:2",
+    venue: "Levi's Stadium, San Francisco",
+    analysis:
+      "Canada have looked sharper in recent outings and carry more attacking threat. Backing them at value odds looks like a smart single-bet play."
+  },
+  vb2: {
+    id: "vb2",
+    league: "Sweden Division 2 - Norrland",
+    flag: "🇸🇪",
+    date: "2026-06-28",
+    time: "13:00",
+    home: "Lucksta",
+    away: "Gottne",
+    homeForm: "LLDDL",
+    awayForm: "WWDWW",
+    odds: { home: "4.2", draw: "3.3", away: "1.74" },
+    pick: "3 on Gottne",
+    pickOdds: "1.74",
+    goals: "-",
+    score: "0:2",
+    venue: "Lucksta IP",
+    analysis:
+      "Gottne are in excellent form and have been consistently winning on the road, while Lucksta have struggled to find consistency this season."
+  },
+  vb3: {
+    id: "vb3",
+    league: "Iceland Úrvalsdeild",
+    flag: "🇮🇸",
+    date: "2026-06-28",
+    time: "18:00",
+    home: "Thor Akureyri",
+    away: "Valur Reykjavik",
+    homeForm: "DLLLL",
+    awayForm: "DLLLW",
+    odds: { home: "4.5", draw: "3.4", away: "1.72" },
+    pick: "6 on Valur Reykjavik",
+    pickOdds: "1.72",
+    goals: "-",
+    score: "0:1",
+    venue: "Þórsvöllur",
+    analysis:
+      "Valur Reykjavik have the better squad depth and recent results back that up, despite a difficult run for the table-leaders."
+  },
+  vb4: {
+    id: "vb4",
+    league: "Iceland Úrvalsdeild",
+    flag: "🇮🇸",
+    date: "2026-06-28",
+    time: "18:00",
+    home: "Keflavik",
+    away: "KR Reykjavik",
+    homeForm: "DLLWD",
+    awayForm: "WLWWL",
+    odds: { home: "4.3", draw: "3.3", away: "1.72" },
+    pick: "6 on KR Reykjavik",
+    pickOdds: "1.72",
+    goals: "-",
+    score: "1:2",
+    venue: "Keflavíkurvöllur",
+    analysis:
+      "KR Reykjavik's away form has been impressive, and Keflavik's defensive frailties at home make this a tempting value pick."
+  },
+  vb5: {
+    id: "vb5",
+    league: "China League Two",
+    flag: "🇨🇳",
+    date: "2026-06-28",
+    time: "12:30",
+    home: "Shenzhen 2028",
+    away: "Chengdu Rongcheng B",
+    homeForm: "WDWWL",
+    awayForm: "DLLLL",
+    odds: { home: "1.7", draw: "3.4", away: "5.0" },
+    pick: "6 on Shenzhen 2028",
+    pickOdds: "1.7",
+    goals: "-",
+    score: "2:0",
+    venue: "Shenzhen Universiade Sports Centre",
+    analysis:
+      "Shenzhen 2028 are well ahead on current form and face a Chengdu side that's lost their last five outings."
+  },
+  vb6: {
+    id: "vb6",
+    league: "Chile Cup",
+    flag: "🇨🇱",
+    date: "2026-06-28",
+    time: "17:30",
+    home: "Cobresal",
+    away: "CD Antofagasta",
+    homeForm: "DLLLL",
+    awayForm: "WDLDD",
+    odds: { home: "1.7", draw: "3.5", away: "4.8" },
+    pick: "3 on Cobresal",
+    pickOdds: "1.7",
+    goals: "-",
+    score: "1:0",
+    venue: "Estadio El Cobre",
+    analysis:
+      "Home advantage should count for a lot here against a CD Antofagasta side that hasn't won away in some time."
+  },
+  vb7: {
+    id: "vb7",
+    league: "Brazil Serie D",
+    flag: "🇧🇷",
+    date: "2026-06-28",
+    time: "21:00",
+    home: "Porto Velho",
+    away: "Sao Raimundo",
+    homeForm: "DWWDD",
+    awayForm: "DLWDL",
+    odds: { home: "1.7", draw: "3.4", away: "5.2" },
+    pick: "6 on Porto Velho",
+    pickOdds: "1.7",
+    goals: "-",
+    score: "2:1",
+    venue: "Estádio Aluízio Ferreira",
+    analysis:
+      "Porto Velho's unbeaten home run continues to be the standout stat heading into this fixture."
+  },
+  vb8: {
+    id: "vb8",
+    league: "Brazil Serie D",
+    flag: "🇧🇷",
+    date: "2026-06-28",
+    time: "21:00",
+    home: "Ferroviario",
+    away: "Central SC",
+    homeForm: "DWDWW",
+    awayForm: "DWLDD",
+    odds: { home: "1.7", draw: "3.3", away: "5.4" },
+    pick: "3 on Ferroviario",
+    pickOdds: "1.7",
+    goals: "-",
+    score: "2:0",
+    venue: "Estádio Presidente Vargas",
+    analysis:
+      "Ferroviario's recent home form has been excellent and they should have enough to see off Central SC."
+  },
+  vb9: {
+    id: "vb9",
+    league: "Belarus Premier League",
+    flag: "🇧🇾",
+    date: "2026-06-28",
+    time: "16:00",
+    home: "FC Dnepr Mogilev",
+    away: "Neman",
+    homeForm: "LLDLD",
+    awayForm: "LLWLW",
+    odds: { home: "1.7", draw: "3.4", away: "5.0" },
+    pick: "3 on Neman",
+    pickOdds: "1.7",
+    goals: "-",
+    score: "0:1",
+    venue: "Spartak Stadium",
+    analysis:
+      "Neman have picked up form at the right time, while Dnepr Mogilev continue to struggle defensively at home."
+  },
+
+  bk1: {
+    id: "bk1",
+    league: "Finland Ykkonen",
+    flag: "🇫🇮",
+    date: "2026-06-28",
+    time: "14:00",
+    home: "KPV",
+    away: "PK Keski-Uusimaa",
+    homeForm: "LLWLL",
+    awayForm: "DWWLD",
+    odds: { home: "5.5", draw: "3.8", away: "1.44" },
+    pick: "9 on PK Keski-Uusimaa",
+    pickOdds: "1.44",
+    goals: "-",
+    score: "0:2",
+    venue: "KPV Stadion",
+    analysis:
+      "PK Keski-Uusimaa are clear favourites on form and class. Low odds reflect a fairly predictable result, ideal for an accumulator leg."
+  },
+  bk2: {
+    id: "bk2",
+    league: "USA USL League Two",
+    flag: "🇺🇸",
+    date: "2026-06-28",
+    time: "02:30",
+    home: "Midlakes United",
+    away: "Ballard",
+    homeForm: "LLWLL",
+    awayForm: "WWWWL",
+    odds: { home: "6.0", draw: "4.2", away: "1.27" },
+    pick: "10 on Ballard",
+    pickOdds: "1.27",
+    goals: "-",
+    score: "0:3",
+    venue: "Midlakes Community Field",
+    analysis: "Ballard's form has been dominant and this looks a routine away win on paper."
+  },
+  bk3: {
+    id: "bk3",
+    league: "USA USL League Two",
+    flag: "🇺🇸",
+    date: "2026-06-28",
+    time: "00:00",
+    home: "River Light",
+    away: "Minneapolis City",
+    homeForm: "DWWLD",
+    awayForm: "WWWWW",
+    odds: { home: "7.5", draw: "4.8", away: "1.21" },
+    pick: "10 on Minneapolis City",
+    pickOdds: "1.21",
+    goals: "-",
+    score: "0:3",
+    venue: "River Light Park",
+    analysis: "Minneapolis City are unbeaten in their last five and look extremely safe here."
+  },
+  bk4: {
+    id: "bk4",
+    league: "Iceland Cup",
+    flag: "🇮🇸",
+    date: "2026-06-28",
+    time: "15:00",
+    home: "Breidablik",
+    away: "Vikingur Reykjavik",
+    homeForm: "LWDWL",
+    awayForm: "WWWWW",
+    odds: { home: "4.6", draw: "3.7", away: "1.59" },
+    pick: "7 on Vikingur Reykjavik",
+    pickOdds: "1.59",
+    goals: "-",
+    score: "1:2",
+    venue: "Kópavogsvöllur",
+    analysis: "Vikingur Reykjavik's perfect recent run makes them the safer side to back."
+  },
+  bk5: {
+    id: "bk5",
+    league: "Australia Northern NSW Premier League",
+    flag: "🇦🇺",
+    date: "2026-06-28",
+    time: "06:00",
+    home: "Kahibah FC",
+    away: "Maitland FC",
+    homeForm: "LWDLL",
+    awayForm: "WWWWL",
+    odds: { home: "4.4", draw: "3.6", away: "1.55" },
+    pick: "8 on Maitland FC",
+    pickOdds: "1.55",
+    goals: "-",
+    score: "0:2",
+    venue: "Cahill Oval",
+    analysis: "Maitland's superior squad depth makes them clear favourites in this matchup."
+  },
+  bk6: {
+    id: "bk6",
+    league: "Chile Cup",
+    flag: "🇨🇱",
+    date: "2026-06-28",
+    time: "22:00",
+    home: "OHiggins",
+    away: "Deportes Recoleta",
+    homeForm: "LDLDW",
+    awayForm: "LDDDL",
+    odds: { home: "1.57", draw: "3.5", away: "5.4" },
+    pick: "8 on OHiggins",
+    pickOdds: "1.57",
+    goals: "-",
+    score: "2:0",
+    venue: "Estadio El Teniente",
+    analysis: "OHiggins are strong at home and face a Recoleta side short on away wins."
+  },
+  bk7: {
+    id: "bk7",
+    league: "Faroe Islands Meistaradeildin",
+    flag: "🇫🇴",
+    date: "2026-06-28",
+    time: "15:00",
+    home: "EB / Streymur",
+    away: "B36 Torshavn",
+    homeForm: "DWLLW",
+    awayForm: "LLDWW",
+    odds: { home: "4.3", draw: "3.6", away: "1.53" },
+    pick: "8 on B36 Torshavn",
+    pickOdds: "1.53",
+    goals: "-",
+    score: "1:2",
+    venue: "Streymsvøllur",
+    analysis: "B36 Torshavn's recent upturn in form makes them the safer pick on paper."
+  },
+  bk8: {
+    id: "bk8",
+    league: "Brazil Serie D",
+    flag: "🇧🇷",
+    date: "2026-06-28",
+    time: "21:00",
+    home: "Treze",
+    away: "Jacuipense",
+    homeForm: "WLDLW",
+    awayForm: "LDDDW",
+    odds: { home: "1.55", draw: "3.5", away: "5.6" },
+    pick: "8 on Treze",
+    pickOdds: "1.55",
+    goals: "-",
+    score: "2:0",
+    venue: "Estádio Presidente Vargas",
+    analysis: "Treze's home form gives them the edge over a Jacuipense side lacking consistency."
+  }
+};
+
+const scheduleByDate = {
+  "2026-06-28": [
+    { league: "World Cup 2026", flag: "🏆", matchIds: ["m1", "m2"] }
+  ],
+  "2026-06-29": [
+    { league: "World Cup 2026", flag: "🏆", matchIds: ["m3", "m4"] }
+  ],
+  "2026-06-30": [
+    { league: "Premier League", flag: "⚽", matchIds: ["m5"] }
+  ]
+};
+
+const betOfTheDay = {
+  valueBets: [
+    { league: "World Cup 2026", flag: "🏆", matchIds: ["vb1"] },
+    { league: "Sweden Division 2 - Norrland", flag: "🇸🇪", matchIds: ["vb2"] },
+    { league: "Iceland Úrvalsdeild", flag: "🇮🇸", matchIds: ["vb3", "vb4"] },
+    { league: "China League Two", flag: "🇨🇳", matchIds: ["vb5"] },
+    { league: "Chile Cup", flag: "🇨🇱", matchIds: ["vb6"] },
+    { league: "Brazil Serie D", flag: "🇧🇷", matchIds: ["vb7", "vb8"] },
+    { league: "Belarus Premier League", flag: "🇧🇾", matchIds: ["vb9"] }
+  ],
+  bankers: [
+    { league: "Finland Ykkonen", flag: "🇫🇮", matchIds: ["bk1"] },
+    { league: "USA USL League Two", flag: "🇺🇸", matchIds: ["bk2", "bk3"] },
+    { league: "Iceland Cup", flag: "🇮🇸", matchIds: ["bk4"] },
+    { league: "Australia Northern NSW Premier League", flag: "🇦🇺", matchIds: ["bk5"] },
+    { league: "Chile Cup", flag: "🇨🇱", matchIds: ["bk6"] },
+    { league: "Faroe Islands Meistaradeildin", flag: "🇫🇴", matchIds: ["bk7"] },
+    { league: "Brazil Serie D", flag: "🇧🇷", matchIds: ["bk8"] }
+  ]
+};
+
+module.exports = { matches, scheduleByDate, betOfTheDay };
