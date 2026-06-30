@@ -22,10 +22,9 @@ jobs:
 
       - name: Run fixture sync
         env:
-          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-          BOT_LEAGUE_IDS: ${{ secrets.BOT_LEAGUE_IDS }}
+          BOT_COMPETITION_CODES: ${{ secrets.BOT_COMPETITION_CODES }}
           BOT_FIXTURE_DAYS_AHEAD: "5"
         run: node update-fixtures.js
-        
