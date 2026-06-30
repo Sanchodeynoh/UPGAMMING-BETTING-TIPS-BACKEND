@@ -1,0 +1,30 @@
+name: Sync Fixtures
+
+on:
+  schedule:
+    # Runs once a day at 03:00 UTC. Adjust the cron expression if you want
+    # a different time. (GitHub Actions cron is always UTC.)
+    - cron: "0 3 * * *"
+  workflow_dispatch: {} # lets you trigger it manually from the Actions tab
+
+jobs:
+  sync-fixtures:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/bot
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run fixture sync
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          BOT_LEAGUE_IDS: ${{ secrets.BOT_LEAGUE_IDS }}
+          BOT_FIXTURE_DAYS_AHEAD: "5"
+        run: node update-fixtures.js
