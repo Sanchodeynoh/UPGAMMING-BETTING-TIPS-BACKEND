@@ -10,7 +10,8 @@
 // history without extra API calls, so homeForm/awayForm are left as
 // placeholders for the admin to fill in manually.
 
-const DEFAULT_COMPETITION_CODES = ["PL", "PD", "SA", "BL1", "FL1"];
+const DEFAULT_COMPETITION_CODES = ["WC", "PL", "PD", "SA", "BL1", "FL1"];
+// WC = FIFA World Cup (running June 11 - July 19, 2026 — in season right now)
 // PL = Premier League, PD = La Liga, SA = Serie A, BL1 = Bundesliga, FL1 = Ligue 1
 // Other free-tier options include: CL (Champions League), ELC (Championship),
 // DED (Eredivisie), PPL (Primeira Liga), BSA (Brasileirão)
