@@ -1,0 +1,32 @@
+name: Sync Livescores
+
+on:
+  schedule:
+    # Runs every 10 minutes. GitHub Actions cron has a practical minimum of
+    # ~5 minutes and isn't guaranteed to run exactly on time under load —
+    # treat this as "approximately every 10 minutes," not a hard real-time
+    # feed. Increase the interval if you're worried about hitting your
+    # API-Football daily request quota (free tier: 100 requests/day).
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  sync-livescores:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bot
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run livescore sync
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          BOT_LEAGUE_IDS: ${{ secrets.BOT_LEAGUE_IDS }}
+        run: node update-livescores.js
