@@ -27,6 +27,7 @@ function dateRange(daysAhead) {
 async function run() {
   const { dateFrom, dateTo } = dateRange(FIXTURE_DAYS_AHEAD);
   let totalSynced = 0;
+  let totalSkipped = 0;
   let totalErrors = 0;
 
   for (const code of COMPETITION_CODES) {
@@ -47,6 +48,15 @@ async function run() {
     }
 
     for (const match of matches) {
+      // Knockout-stage placeholder fixtures (e.g. "Winner Group A vs
+      // Runner-up Group B") don't have real team names assigned yet —
+      // skip these quietly rather than counting them as errors. They'll
+      // sync automatically once the actual teams are determined.
+      if (!match.homeTeam || !match.homeTeam.name || !match.awayTeam || !match.awayTeam.name) {
+        totalSkipped++;
+        continue;
+      }
+
       try {
         const siteMatch = matchToSiteMatch(match);
         await upsertMatch(siteMatch);
@@ -63,7 +73,7 @@ async function run() {
     await new Promise((resolve) => setTimeout(resolve, 1500));
   }
 
-  console.log(`\nDone. Synced ${totalSynced} matches, ${totalErrors} errors.`);
+  console.log(`\nDone. Synced ${totalSynced} matches, ${totalSkipped} skipped (TBD teams), ${totalErrors} real errors.`);
   if (totalErrors > 0) process.exitCode = 1;
 }
 
