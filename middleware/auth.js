@@ -23,4 +23,3 @@ function requireAdmin(req, res, next) {
 }
 
 module.exports = { requireAdmin, ADMIN_PASSWORD };
-                                 
