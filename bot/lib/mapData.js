@@ -1,89 +1,67 @@
 // bot/lib/mapData.js
+// Maps football-data.org's response shape into this site's match/livescore schema.
 
-// Builds a "WWDLW"-style form string from a team's recent fixtures.
-// teamId = the team we're computing form FOR (so we know home/away per game).
-function buildFormString(fixtures, teamId) {
-  if (!fixtures || fixtures.length === 0) return "DDDDD";
-
-  return fixtures
-    .slice(-5)
-    .map((f) => {
-      const isHome = f.teams.home.id === teamId;
-      const homeGoals = f.goals.home;
-      const awayGoals = f.goals.away;
-      if (homeGoals === null || awayGoals === null) return "D"; // not finished, fallback
-
-      if (homeGoals === awayGoals) return "D";
-      const teamWon = isHome ? homeGoals > awayGoals : awayGoals > homeGoals;
-      return teamWon ? "W" : "L";
-    })
-    .join("")
-    .padEnd(5, "D")
-    .slice(0, 5);
+function mapStatus(status) {
+  if (["IN_PLAY", "PAUSED"].includes(status)) return "live";
+  if (["FINISHED"].includes(status)) return "finished";
+  return "upcoming"; // SCHEDULED, TIMED, POSTPONED, SUSPENDED, etc.
 }
 
-// Converts an API-Football fixture object into our site's match schema.
-// homeForm/awayForm are passed in separately since they require extra API calls.
-function fixtureToMatch(fixture, homeForm, awayForm) {
-  const f = fixture.fixture;
-  const league = fixture.league;
-  const teams = fixture.teams;
-  const goals = fixture.goals;
-
-  const dateObj = new Date(f.date);
+// Converts a football-data.org match object into our site's match schema.
+// homeForm/awayForm are left as placeholders — computing real form would
+// cost extra API requests per team, which isn't worth it on a 10 req/min
+// free tier. Fill these in manually via the admin dashboard if you want them.
+function matchToSiteMatch(match) {
+  const dateObj = new Date(match.utcDate);
   const date = dateObj.toISOString().slice(0, 10);
   const time = dateObj.toISOString().slice(11, 16);
 
+  const homeGoals = match.score && match.score.fullTime ? match.score.fullTime.home : null;
+  const awayGoals = match.score && match.score.fullTime ? match.score.fullTime.away : null;
+
   return {
-    id: `af_${f.id}`, // prefix to avoid clashing with any manually-added ids
-    league: league.name,
+    id: `fd_${match.id}`, // prefix to avoid clashing with manually-added ids
+    league: match.competition ? match.competition.name : "Football",
     flag: "⚽",
     date,
     time,
-    home: teams.home.name,
-    away: teams.away.name,
-    homeForm: homeForm || "DDDDD",
-    awayForm: awayForm || "DDDDD",
-    // NOTE: API-Football's free tier does not include bookmaker odds or
-    // win-probability predictions. Odds/pick/goals/analysis are left as
-    // placeholders here — fill them in manually via the admin dashboard,
-    // or upgrade your API-Football plan to pull real odds automatically.
+    home: match.homeTeam.name,
+    away: match.awayTeam.name,
+    homeForm: "DDDDD", // placeholder — fill in manually if desired
+    awayForm: "DDDDD", // placeholder — fill in manually if desired
+    // NOTE: football-data.org's free tier does not include bookmaker odds.
+    // Odds/pick/goals/analysis are left as placeholders — fill them in
+    // manually via the admin dashboard once the fixture appears.
     odds: { home: "-", draw: "-", away: "-" },
     pick: "-",
     goals: "-",
-    score: goals.home !== null ? `${goals.home}:${goals.away}` : "-",
-    venue: f.venue && f.venue.name ? f.venue.name : "",
-    analysis: "" // left blank intentionally — see note in README about not auto-generating "guaranteed" claims
+    score: homeGoals !== null ? `${homeGoals}:${awayGoals}` : "-",
+    venue: match.venue || "",
+    analysis: ""
   };
 }
 
-// Converts a live/in-progress fixture into our site's livescore schema.
-function fixtureToLiveMatch(fixture) {
-  const f = fixture.fixture;
-  const league = fixture.league;
-  const teams = fixture.teams;
-  const goals = fixture.goals;
-
-  let status = "upcoming";
-  if (["1H", "2H", "HT", "ET", "P", "LIVE"].includes(f.status.short)) status = "live";
-  if (["FT", "AET", "PEN"].includes(f.status.short)) status = "finished";
-
-  const dateObj = new Date(f.date);
+// Converts a football-data.org match object into our site's livescore schema.
+// NOTE: free tier doesn't provide a live minute counter, only status. We set
+// minute to 0; the frontend will show a "LIVE" badge without a ticking clock.
+function matchToLiveMatch(match) {
+  const dateObj = new Date(match.utcDate);
+  const homeGoals = match.score && match.score.fullTime ? match.score.fullTime.home : 0;
+  const awayGoals = match.score && match.score.fullTime ? match.score.fullTime.away : 0;
 
   return {
-    id: `af_${f.id}`,
-    league: league.name,
+    id: `fd_${match.id}`,
+    league: match.competition ? match.competition.name : "Football",
     flag: "⚽",
     date: dateObj.toISOString().slice(0, 10),
     time: dateObj.toISOString().slice(11, 16),
-    home: teams.home.name,
-    away: teams.away.name,
-    homeScore: goals.home ?? 0,
-    awayScore: goals.away ?? 0,
-    status,
-    minute: f.status.elapsed || 0
+    home: match.homeTeam.name,
+    away: match.awayTeam.name,
+    homeScore: homeGoals ?? 0,
+    awayScore: awayGoals ?? 0,
+    status: mapStatus(match.status),
+    minute: 0 // not available on the free tier
   };
 }
 
-module.exports = { buildFormString, fixtureToMatch, fixtureToLiveMatch };
-    
+module.exports = { mapStatus, matchToSiteMatch, matchToLiveMatch };
