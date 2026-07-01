@@ -1,0 +1,13 @@
+{
+  "name": "upgamming-bot",
+  "version": "1.0.0",
+  "description": "Automated fixture & livescore sync bot for UPGAMMING BETTING TIPS",
+  "private": true,
+  "scripts": {
+    "update-fixtures": "node update-fixtures.js",
+    "update-livescores": "node update-livescores.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
