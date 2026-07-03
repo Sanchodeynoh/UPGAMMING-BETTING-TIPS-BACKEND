@@ -1,0 +1,29 @@
+name: Enrich Matches
+
+on:
+  schedule:
+    # Runs daily at 04:00 UTC — after sync-fixtures (03:00 UTC) has completed,
+    # giving it an hour to finish before enrichment starts.
+    - cron: "0 4 * * *"
+  workflow_dispatch: {} # Manual trigger from Actions tab
+
+jobs:
+  enrich-matches:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bot
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run match enrichment
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          BOT_FIXTURE_DAYS_AHEAD: "5"
+        run: node enrich-matches.js
