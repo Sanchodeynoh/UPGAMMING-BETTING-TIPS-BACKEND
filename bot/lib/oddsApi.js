@@ -1,12 +1,7 @@
 // bot/lib/oddsApi.js
-// Fetches real bookmaker odds from The Odds API (the-odds-api.com)
-// Free tier: 500 credits/month. Each request costs 1 credit.
-
 const ODDS_API_KEY = process.env.ODDS_API_KEY;
 const BASE_URL = "https://api.the-odds-api.com/v4";
 
-// Sport keys for football competitions on The Odds API
-// Full list: https://the-odds-api.com/sports-odds-data/sports-apis.html
 const SPORT_KEYS = [
   "soccer_fifa_world_cup",
   "soccer_brazil_campeonato",
@@ -28,22 +23,15 @@ async function getOddsForSport(sportKey) {
   url.searchParams.set("oddsFormat", "decimal");
 
   const res = await fetch(url.toString());
-
-  if (res.status === 422) {
-    // Sport not currently available (off-season) — not an error
-    return [];
-  }
+  if (res.status === 422 || res.status === 404) return [];
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`Odds API error for ${sportKey} (${res.status}): ${text}`);
+    throw new Error(`Odds API error ${sportKey} (${res.status}): ${text}`);
   }
-
   const data = await res.json();
   return data || [];
 }
 
-// Returns a flat map of "home_team|away_team" -> { home, draw, away } odds
-// Tries all sport keys and merges results
 async function getAllOddsMap() {
   const map = new Map();
 
@@ -52,38 +40,34 @@ async function getAllOddsMap() {
     try {
       events = await getOddsForSport(sportKey);
     } catch (err) {
-      console.warn(`  Could not fetch odds for ${sportKey}: ${err.message}`);
+      console.warn(`  Odds fetch failed for ${sportKey}: ${err.message}`);
       continue;
     }
-
     for (const event of events) {
       const bookmaker = event.bookmakers && event.bookmakers[0];
       if (!bookmaker) continue;
-
       const h2h = bookmaker.markets.find((m) => m.key === "h2h");
       if (!h2h) continue;
-
       const outcomes = h2h.outcomes;
-      const homeOutcome = outcomes.find((o) => o.name === event.home_team);
-      const awayOutcome = outcomes.find((o) => o.name === event.away_team);
-      const drawOutcome = outcomes.find((o) => o.name === "Draw");
+      const homeOut = outcomes.find((o) => o.name === event.home_team);
+      const awayOut = outcomes.find((o) => o.name === event.away_team);
+      const drawOut = outcomes.find((o) => o.name === "Draw");
+      if (!homeOut || !awayOut) continue;
 
-      if (!homeOutcome || !awayOutcome) continue;
-
-      const key = `${event.home_team}|${event.away_team}`;
-      map.set(key, {
-        home: homeOutcome.price.toFixed(2),
-        draw: drawOutcome ? drawOutcome.price.toFixed(2) : "-",
-        away: awayOutcome.price.toFixed(2),
-        commenceTime: event.commence_time
-      });
+      // Store under BOTH team-name orderings for robustness
+      const val = {
+        home: homeOut.price.toFixed(2),
+        draw: drawOut ? drawOut.price.toFixed(2) : "-",
+        away: awayOut.price.toFixed(2),
+        homeTeam: event.home_team,
+        awayTeam: event.away_team
+      };
+      map.set(`${event.home_team}|${event.away_team}`, val);
     }
-
-    // Small pause between requests to be kind to the API
-    await new Promise((r) => setTimeout(r, 500));
+    await new Promise((r) => setTimeout(r, 600));
   }
 
-  console.log(`  Odds map built: ${map.size} matches with odds`);
+  console.log(`  Odds map: ${map.size} fixtures`);
   return map;
 }
 
